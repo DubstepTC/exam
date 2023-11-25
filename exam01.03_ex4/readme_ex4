@@ -1,0 +1,3 @@
+в манифест после </application> добавить <uses-permission android:name="android.permission.INTERNET"/>
+в консоль flutter pub add video_player
+
