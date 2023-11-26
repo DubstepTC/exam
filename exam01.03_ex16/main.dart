@@ -44,9 +44,12 @@ class CosmeticProductItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(product.imageUrl),
+          Image.asset(
+            product.imageUrl, // использование локальной картинки из assets
+            fit: BoxFit.cover, // чтобы изображение занимало всю доступную область
+          ),
           Text(product.name),
-          Text('\$${product.price.toString()}'),
+          Text('\$${product.price.toStringAsFixed(2)}'), // форматирование до двух знаков после запятой
         ],
       ),
     );
@@ -64,7 +67,7 @@ class Product {
 List<Product> cosmeticProducts = [
   Product(
     name: "Помада",
-    imageUrl: "https://example.com/lipstick.jpg",
+    imageUrl: "assets/kat.jpg",
     price: 10.99,
   ),
   // Другие продукты
