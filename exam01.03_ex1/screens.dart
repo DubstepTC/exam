@@ -8,7 +8,7 @@ class FirstWindow extends StatelessWidget {
         title: Text('Первое окно'),
       ),
       body: Center(
-        child: RaisedButton(
+        child: ElevatedButton(
           child: Text('Перейти ко второму окну'),
           onPressed: () {
             Navigator.push(
@@ -30,7 +30,7 @@ class SecondWindow extends StatelessWidget {
         title: Text('Второе окно'),
       ),
       body: Center(
-        child: RaisedButton(
+        child: ElevatedButton(
           child: Text('Вернуться к первому окну'),
           onPressed: () {
             Navigator.pop(context);
