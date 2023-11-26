@@ -37,14 +37,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Object Resizer'),
+        title: Text(''),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Tap buttons to resize the object:',
+              'Нажмите на кнопку, чтобы изменить размер:',
             ),
             SizedBox(height: 20),
             GestureDetector(
@@ -61,11 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: _increaseSize,
-                  child: Text('Increase'),
+                  child: Text('Увеличить'),
                 ),
                 ElevatedButton(
                   onPressed: _decreaseSize,
-                  child: Text('Decrease'),
+                  child: Text('Уменьшить'),
                 ),
               ],
             ),
