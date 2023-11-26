@@ -18,7 +18,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notification Example'),
+        title: const Text('Пример уведомлений'),
       ),
       body: Center(
         child: Column(
@@ -26,29 +26,17 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('Dialog Box'),
-                      content: Text('This is a dialog box.'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text('Close'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-                // Показываем всплывающее уведомление на 2 секунды
-                showSnackbar('Short Snackbar', 2);
-                // Показываем всплывающее уведомление на 5 секунд
-                showSnackbar('Longer Snackbar', 5);
+                _showDialogAndSnackbar(context);
               },
-              child: Text('Show Dialog and Snackbar'),
+              child: Text(
+                'Показать диалог и уведомление',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+              ),
             ),
           ],
         ),
@@ -56,11 +44,47 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  void showSnackbar(String message, int durationSeconds) {
+  void _showDialogAndSnackbar(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Диалоговое окно'),
+          content: const Text('Это диалоговое окно.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Закрыть'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    _showSnackbar(context, 'Короткое уведомление', 2);
+
+    Future.delayed(Duration(seconds: 2), () {
+      AnimatedSnackBar.showCustomSnackBar(context, 'Длинное уведомление', durationSeconds: 5);
+    });
+  }
+
+  void _showSnackbar(BuildContext context, String message, int durationSeconds) {
+    AnimatedSnackBar.showCustomSnackBar(context, message, durationSeconds: durationSeconds);
+  }
+}
+
+class AnimatedSnackBar {
+  static void showCustomSnackBar(BuildContext context, String message, {int durationSeconds = 3}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         duration: Duration(seconds: durationSeconds),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        margin: EdgeInsets.all(10),
+        backgroundColor: Colors.blue,
       ),
     );
   }
