@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'product_detail_screen.dart'; // Импорт вашего экрана с подробной информацией о товаре
+import 'cosmetick.dart'; // Импорт вашего экрана с подробной информацией о товаре
 
 void main() {
   runApp(MyApp());
