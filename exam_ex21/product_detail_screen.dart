@@ -5,7 +5,7 @@ class ProductDetailScreen extends StatelessWidget {
   final String description;
   final double price;
 
-  ProductDetailScreen({this.productName, this.description, this.price});
+  ProductDetailScreen({required this.productName, required this.description, required this.price});
 
   @override
   Widget build(BuildContext context) {
