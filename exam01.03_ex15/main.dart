@@ -6,7 +6,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Clothing Store',
+      title: 'Магазин одежды',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -37,7 +37,7 @@ class ProductScreen extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             Text(
-              'Product Name',
+              'Название продукта',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
