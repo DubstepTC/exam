@@ -1,54 +1,23 @@
 import 'package:flutter/material.dart';
+import 'product_detail_screen.dart'; // Импорт вашего экрана с подробной информацией о товаре
 
-class CosmeticProductScreen extends StatelessWidget {
-  final CosmeticProduct product;
+void main() {
+  runApp(MyApp());
+}
 
-  CosmeticProductScreen({required this.product});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Подробная информация'),
+    return MaterialApp(
+      title: 'Exam_ex21',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(product.imageUrl),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    product.description,
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Цена: \$${product.price.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      home: ProductDetailScreen(
+        productName: 'Что-то',
+        description: 'Описание',
+        price: 5550,
+      ), // Вызываем ваш экран с данными о товаре
     );
   }
 }
