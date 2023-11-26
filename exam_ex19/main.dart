@@ -38,13 +38,13 @@ class UserProfileScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 20),
-            FlatButton(
+            ElevatedButton(
               onPressed: () {
                 // Действие по изменению пароля
               },
               child: Text('Изменить пароль'),
             ),
-            FlatButton(
+            ElevatedButton(
               onPressed: () {
                 // Действие по выходу из аккаунта
               },
