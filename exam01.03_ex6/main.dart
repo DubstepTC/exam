@@ -1,3 +1,5 @@
+// Просто плачь тут вообще не понятно... Вроде код правильный но плеер не запускается. (говори комп дерьмо)
+
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
