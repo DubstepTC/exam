@@ -1,37 +1,40 @@
-//Когда вы добавите видеофайл с именем "sample_video.mp4" в папку assets, вы сможете запустить этот проект и увидеть воспроизведение видео с кнопками управления.
-//
-//
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(VideoApp());
 
-class MyApp extends StatelessWidget {
+class VideoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Video Player Demo',
       home: VideoPlayerScreen(),
     );
   }
 }
 
 class VideoPlayerScreen extends StatefulWidget {
+  VideoPlayerScreen({Key? key}) : super(key: key);
+
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   late VideoPlayerController _controller;
-  bool isPlaying = false;
+  late Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState() {
+    _controller = VideoPlayerController.asset('assets/sample_video.mp4');
+    _initializeVideoPlayerFuture = _controller.initialize();
     super.initState();
-    _controller = VideoPlayerController.asset('assets/sample_video.mp4')
-      ..initialize().then((_) {
-        // Ensure the first frame is shown
-        setState(() {});
-      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -41,35 +44,45 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         title: Text('Video Player'),
       ),
       body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
+        child: FutureBuilder(
+          future: _initializeVideoPlayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return AspectRatio(
                 aspectRatio: _controller.value.aspectRatio,
                 child: VideoPlayer(_controller),
-              )
-            : CircularProgressIndicator(),
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
+        ),
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
           FloatingActionButton(
             onPressed: () {
               setState(() {
-                if (isPlaying) {
+                if (_controller.value.isPlaying) {
                   _controller.pause();
                 } else {
                   _controller.play();
                 }
-                isPlaying = !isPlaying;
               });
             },
-            child: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+            child: Icon(
+              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+            ),
           ),
-          SizedBox(width: 20.0),
+          SizedBox(
+            height: 16,
+          ),
           FloatingActionButton(
             onPressed: () {
               setState(() {
                 _controller.pause();
-                isPlaying = false;
+                _controller.seekTo(Duration.zero);
               });
             },
             child: Icon(Icons.stop),
@@ -77,11 +90,5 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
   }
 }
