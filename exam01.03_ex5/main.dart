@@ -14,29 +14,39 @@ class AudioPlayerApp extends StatelessWidget {
   }
 }
 
-class AudioPlayerScreen extends StatefulWidget {
+class AudioPlayerScreen extends StatelessWidget {
   @override
-  _AudioPlayerScreenState createState() => _AudioPlayerScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Audio Player')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AudioPlayerWidget('audio1.mp3'),
+            AudioPlayerWidget('audio2.mp3'),
+            AudioPlayerWidget('audio3.mp3'),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
+class AudioPlayerWidget extends StatefulWidget {
+  final String audioPath;
+
+  AudioPlayerWidget(this.audioPath);
+
+  @override
+  _AudioPlayerWidgetState createState() => _AudioPlayerWidgetState();
+}
+
+enum PlayerState { stopped, playing, paused }
+
+class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   AudioPlayer audioPlayer = AudioPlayer();
-  AudioCache audioCache = AudioCache();
-
-  playLocal(String audioPath) async {
-    int result = await audioPlayer.play(audioPath, isLocal: true);
-    if (result == 1) {
-      // success
-    }
-  }
-
-  pause() {
-    audioPlayer.pause();
-  }
-
-  stop() {
-    audioPlayer.stop();
-  }
+  PlayerState audioPlayerState = PlayerState.stopped;
 
   @override
   void dispose() {
@@ -44,39 +54,68 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Audio Player'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () => playLocal('assets/audio/audio1.mp3'),
-              child: Text('Play Audio 1'),
-            ),
-            ElevatedButton(
-              onPressed: () => playLocal('assets/audio/audio2.mp3'),
-              child: Text('Play Audio 2'),
-            ),
-            ElevatedButton(
-              onPressed: () => playLocal('assets/audio/audio3.mp3'),
-              child: Text('Play Audio 3'),
-            ),
-            ElevatedButton(
-              onPressed: pause,
-              child: Text('Pause'),
-            ),
-            ElevatedButton(
-              onPressed: stop,
-              child: Text('Stop'),
-            ),
-          ],
-        ),
-      ),
-    );
+   void play() async {
+    await audioPlayer.play(AssetSource(widget.audioPath));
+    setState(() {
+      audioPlayerState = PlayerState.playing;
+    });
   }
+
+  void pause() {
+    audioPlayer.pause();
+    setState(() {
+      audioPlayerState = PlayerState.paused;
+    });
+  }
+
+  void stop() {
+    audioPlayer.stop();
+    setState(() {
+      audioPlayerState = PlayerState.stopped;
+    });
+  }
+
+  @override
+ Widget build(BuildContext context) {
+  return Column(
+    children: [
+      Text(
+        'Audio ${widget.audioPath}',
+        style: TextStyle(fontSize: 20),
+      ),
+      if (audioPlayerState == PlayerState.playing)
+        IconButton(
+          icon: Icon(Icons.pause),
+          iconSize: 40,
+          color: Colors.red,
+          onPressed: pause,
+        )
+      else if (audioPlayerState == PlayerState.paused)
+        IconButton(
+          icon: Icon(Icons.play_arrow),
+          iconSize: 40,
+          color: Colors.green,
+          onPressed: play,
+        )
+      else
+        IconButton(
+          icon: Icon(Icons.play_arrow),
+          iconSize: 40,
+          color: Colors.green,
+          onPressed: () {
+            play();
+            // Допустим, play() переводит audioPlayerState в значение PlayerState.playing
+          },
+        ),
+      IconButton(
+        icon: Icon(Icons.stop),
+        iconSize: 40,
+        color: Colors.blue,
+        onPressed: stop,
+      ),
+    ],
+  );
+}
+
+
 }
