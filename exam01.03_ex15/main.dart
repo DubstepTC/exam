@@ -20,7 +20,7 @@ class ProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Details'),
+        title: Text('Информация о продукте'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -44,7 +44,7 @@ class ProductScreen extends StatelessWidget {
               ),
             ),
             Text(
-              'Price: \$99.99',
+              'Цена: \$99.99',
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black87,
@@ -52,7 +52,7 @@ class ProductScreen extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             Text(
-              'Description of the product...',
+              'Описание продукта...',
               style: TextStyle(
                 fontSize: 16,
               ),
